@@ -14,7 +14,7 @@ namespace OnlineVideoStreamingApp
                                     builder.Services.AddDbContext<OnlineVideoStreamingAppContext>(options =>
                 options.UseSqlServer(connectionString));
 
-                                                builder.Services.AddDefaultIdentity<OnlineVideoStreamingAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                                                builder.Services.AddDefaultIdentity<OnlineVideoStreamingAppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<OnlineVideoStreamingAppContext>();
 
             // Add services to the container.

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OnlineVideoStreamingApp.Areas.Identity.Data;
+using OnlineVideoStreamingApp.Models;
 
 namespace OnlineVideoStreamingApp.Data;
 
@@ -11,6 +12,15 @@ public class OnlineVideoStreamingAppContext : IdentityDbContext<OnlineVideoStrea
         : base(options)
     {
     }
+    public DbSet<VideosModel> videos { get; set; }
+
+    public DbSet<SubscriberInfoModel> subscriptionInfo { get; set; }
+    public DbSet<VideoLikesModel> likesTable { get; set; }
+    public DbSet<CommentsInfoModel> commentsTable { get; set; }
+    public DbSet<CustomerSupportModel> customerSupportTable { get; set; }
+
+
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

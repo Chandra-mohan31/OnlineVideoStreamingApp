@@ -295,3 +295,5 @@ C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Microsoft.Ex
 C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\DELL\source\repos\OnlineVideoStreamingApp\obj\Debug\net6.0\OnlineVideoStreamingApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\AWSSDK.Core.dll
+C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\AWSSDK.S3.dll

@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "WRQ+j5bAWxe/8uibYbFgRxza/TXnS93lnjPo0zs+3Ac10Dc/8oPFPgx1oNatcJQU9TW33g364u3CasLMVQ3z4A==",
+  "dgSpecHash": "y7LCvwYn9ScBsgcHFWmTzwg2H2JPr6Ly+iNmhvBrMO0ynANFSa0t42b9WwkuUGWDfNjzirF/5I4i64a3WF8rdQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\DELL\\source\\repos\\OnlineVideoStreamingApp\\OnlineVideoStreamingApp.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\DELL\\.nuget\\packages\\awssdk.core\\3.7.106.28\\awssdk.core.3.7.106.28.nupkg.sha512",
+    "C:\\Users\\DELL\\.nuget\\packages\\awssdk.s3\\3.7.104.6\\awssdk.s3.3.7.104.6.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

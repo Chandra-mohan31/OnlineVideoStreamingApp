@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineVideoStreamingApp.Data;
 
@@ -11,9 +12,11 @@ using OnlineVideoStreamingApp.Data;
 namespace OnlineVideoStreamingApp.Migrations
 {
     [DbContext(typeof(OnlineVideoStreamingAppContext))]
-    partial class OnlineVideoStreamingAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230428112020_videostable")]
+    partial class videostable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,105 +230,6 @@ namespace OnlineVideoStreamingApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.CommentsInfoModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommentedUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("VideoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentedUserId");
-
-                    b.HasIndex("VideoId");
-
-                    b.ToTable("commentsTable");
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.CustomerSupportModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Query")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("QueryPostedUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QueryPostedUserId");
-
-                    b.ToTable("customerSupportTable");
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.SubscriberInfoModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("SubscribeeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SubscriberId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubscribeeId");
-
-                    b.HasIndex("SubscriberId");
-
-                    b.ToTable("subscriptionInfo");
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.VideoLikesModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("LikedUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("VideoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LikedUserId");
-
-                    b.HasIndex("VideoId");
-
-                    b.ToTable("likesTable");
-                });
-
             modelBuilder.Entity("OnlineVideoStreamingApp.Models.VideosModel", b =>
                 {
                     b.Property<int>("Id")
@@ -417,64 +321,6 @@ namespace OnlineVideoStreamingApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.CommentsInfoModel", b =>
-                {
-                    b.HasOne("OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser", "CommentedUser")
-                        .WithMany()
-                        .HasForeignKey("CommentedUserId");
-
-                    b.HasOne("OnlineVideoStreamingApp.Models.VideosModel", "Video")
-                        .WithMany()
-                        .HasForeignKey("VideoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CommentedUser");
-
-                    b.Navigation("Video");
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.CustomerSupportModel", b =>
-                {
-                    b.HasOne("OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser", "QueryPostedUser")
-                        .WithMany()
-                        .HasForeignKey("QueryPostedUserId");
-
-                    b.Navigation("QueryPostedUser");
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.SubscriberInfoModel", b =>
-                {
-                    b.HasOne("OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser", "Subscribee")
-                        .WithMany()
-                        .HasForeignKey("SubscribeeId");
-
-                    b.HasOne("OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser", "Subscriber")
-                        .WithMany()
-                        .HasForeignKey("SubscriberId");
-
-                    b.Navigation("Subscribee");
-
-                    b.Navigation("Subscriber");
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.VideoLikesModel", b =>
-                {
-                    b.HasOne("OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser", "LikedUser")
-                        .WithMany()
-                        .HasForeignKey("LikedUserId");
-
-                    b.HasOne("OnlineVideoStreamingApp.Models.VideosModel", "Video")
-                        .WithMany()
-                        .HasForeignKey("VideoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LikedUser");
-
-                    b.Navigation("Video");
                 });
 
             modelBuilder.Entity("OnlineVideoStreamingApp.Models.VideosModel", b =>

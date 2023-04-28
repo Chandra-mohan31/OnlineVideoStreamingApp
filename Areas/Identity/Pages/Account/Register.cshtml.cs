@@ -11,6 +11,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Amazon.S3.Transfer;
+using Amazon.S3;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +22,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using OnlineVideoStreamingApp.Areas.Identity.Data;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace OnlineVideoStreamingApp.Areas.Identity.Pages.Account
 {
@@ -31,12 +34,13 @@ namespace OnlineVideoStreamingApp.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<OnlineVideoStreamingAppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
+        private readonly IConfiguration _configuration;
         public RegisterModel(
             UserManager<OnlineVideoStreamingAppUser> userManager,
             IUserStore<OnlineVideoStreamingAppUser> userStore,
             SignInManager<OnlineVideoStreamingAppUser> signInManager,
             ILogger<RegisterModel> logger,
+            IConfiguration configuration,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -45,6 +49,7 @@ namespace OnlineVideoStreamingApp.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -113,14 +118,75 @@ namespace OnlineVideoStreamingApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(IFormFile file,string returnUrl = null)
         {
+            var uploadedUrl = "";
+
+            Console.WriteLine("In Register");
+            if (file == null)
+            {
+                Console.WriteLine("file was empty");
+            }
+            else
+            {
+                Console.WriteLine(file.FileName);
+                /// uploading to s3 bucket and getting the url 
+                try
+                {
+                    var accessKey = _configuration["accessKey"];
+                    var secretAccessKey = _configuration["secretAccessKey"];
+
+                    // Create an instance of the Amazon S3 client
+                    var client = new AmazonS3Client(accessKey, secretAccessKey, Amazon.RegionEndpoint.USEast1);
+
+                    // Set the name of your S3 bucket and the key under which to store the file
+                    var bucketName = "onlinevideostreamingapp";
+
+                    var keyName = file.FileName;
+
+                    // Set the full path of the file you want to upload
+                    var filePath = $"C:\\Users\\DELL\\source\\repos\\OnlineVideoStreamingApp\\images\\{file.FileName}";
+
+                    // Create a TransferUtility object to upload the file
+                    var transferUtility = new TransferUtility(client);
+                    var fileTransferUtilityRequest = new TransferUtilityUploadRequest
+                    {
+                        BucketName = bucketName,
+                        FilePath = filePath,
+                        Key = keyName,
+                        ContentType = "image/jpeg"
+                    };
+
+                    // Upload the file to the S3 bucket
+                    transferUtility.Upload(fileTransferUtilityRequest);
+                    // Get the URL of the uploaded file
+                    var url = client.GetPreSignedURL(new Amazon.S3.Model.GetPreSignedUrlRequest
+                    {
+                        BucketName = bucketName,
+                        Key = keyName,
+                        Expires = DateTime.Now.AddDays(2) // Set the expiration date of the URL
+                    });
+
+                    // Print out the URL of the uploaded file
+                    url = url.Substring(0, url.IndexOf("?"));
+                    uploadedUrl = url;
+                    Console.WriteLine("Uploaded file URL: " + url);
+                    ViewData["imageSrc"] = url;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+            }
+
+            Console.WriteLine("file name verified");
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                
+                user.ProfileImageUrl = uploadedUrl;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

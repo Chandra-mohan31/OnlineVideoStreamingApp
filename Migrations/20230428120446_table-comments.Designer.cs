@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineVideoStreamingApp.Data;
 
@@ -11,9 +12,11 @@ using OnlineVideoStreamingApp.Data;
 namespace OnlineVideoStreamingApp.Migrations
 {
     [DbContext(typeof(OnlineVideoStreamingAppContext))]
-    partial class OnlineVideoStreamingAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230428120446_table-comments")]
+    partial class tablecomments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,32 +257,6 @@ namespace OnlineVideoStreamingApp.Migrations
                     b.ToTable("commentsTable");
                 });
 
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.CustomerSupportModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Query")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("QueryPostedUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QueryPostedUserId");
-
-                    b.ToTable("customerSupportTable");
-                });
-
             modelBuilder.Entity("OnlineVideoStreamingApp.Models.SubscriberInfoModel", b =>
                 {
                     b.Property<int>("Id")
@@ -434,15 +411,6 @@ namespace OnlineVideoStreamingApp.Migrations
                     b.Navigation("CommentedUser");
 
                     b.Navigation("Video");
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.CustomerSupportModel", b =>
-                {
-                    b.HasOne("OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser", "QueryPostedUser")
-                        .WithMany()
-                        .HasForeignKey("QueryPostedUserId");
-
-                    b.Navigation("QueryPostedUser");
                 });
 
             modelBuilder.Entity("OnlineVideoStreamingApp.Models.SubscriberInfoModel", b =>
