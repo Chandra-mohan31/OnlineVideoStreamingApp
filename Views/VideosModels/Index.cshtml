@@ -1,0 +1,204 @@
+﻿@model IEnumerable<OnlineVideoStreamingApp.Models.VideosModel>
+
+
+
+@{
+    ViewData["Title"] = "Index";
+    var users = (List<OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser>)ViewData["users"];
+    var subscribedUsersId = (List<string>)ViewData["subscribedUsersId"];
+}
+
+
+@if(ViewData["users"] != null)
+{
+    
+    <div class="users-container">
+        @foreach (var user in users)
+        {
+            <div class="user-card">
+                <img src="@user.ProfileImageUrl" alt="" class="rounded-avatar1" />
+                <div class="user-details">
+                    <p class="username">@user.UserName</p>
+                    @if (subscribedUsersId.Contains(user.Id)){
+                        <form asp-action="UnSubscribeUser">
+                            <input type="text" value="@user.Id" name="subscribeeId" hidden />
+                            <button type="submit" class="unsubscribe-btn">UnSubscribe</button>
+
+                        </form>
+                    }else{
+                        if (!(user.Id == ViewData["currUserId"].ToString()))
+                        {
+                            <form asp-action="SubscribeUser">
+                                <input type="text" value="@user.Id" name="subscribeeId" hidden />
+                        <button type="submit" class="subscribe-btn">Subscribe</button>
+
+                            </form>
+                        }
+                        else
+                        {
+                            <button class="subscribe-btn">You</button>
+
+                        }
+                    }
+                </div>
+            </div>
+
+        }
+    </div>
+
+
+}
+
+<h5>Subscribed Videos</h5>
+
+<p>
+   
+        <a asp-action="Create">
+        <button class="btn btn-primary text-white">Upload a new video</button>
+    </a>
+
+
+    
+</p>
+
+
+
+<div class="d-flex flex-wrap">
+    @foreach (var item in Model)
+    {
+        <div class="card mb-4 mr-4 m-4" style="width: 300px;">
+            <img class="card-img-top" src="@item.ThumbNailImage" alt="Card image cap" style="height: 150px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">@item.VideoTitle</h5>
+                <p class="card-text">@item.VideoDescription</p>
+            </div>
+            <ul class="list-group list-group-flush">
+               <div class="d-flex justify-content-center">
+                    <img src="@item.PostedByUser.ProfileImageUrl" alt="Profile Image" class="rounded-avatar" />
+
+                <li class="list-group-item border-0"><strong>Posted By:</strong> @item.PostedByUser.UserName</li>
+               </div>
+
+                <li class="list-group-item"><strong>Category:</strong> @item.VideoCategory</li>
+            </ul>
+            <div class="card-footer">
+                @*<a href="@item.VideoUrl" class="btn btn-primary">Watch Video</a>*@
+               @*<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Edit</a>*@
+                <a asp-action="PlayVideo" asp-route-id="@item.Id" class="btn btn-primary">Play Video</a>
+                @*<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>*@
+            </div>
+        </div>
+
+        
+    }
+</div>
+
+<style>
+   
+
+    .users-container {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 10px;
+    }
+
+    .user-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 10px;
+        width: 200px;
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .rounded-avatar1 {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .username {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .subscribe-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .unsubscribe-btn {
+        background-color: red;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+</style>
+
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ThumbNailImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LikesCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoCategory)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThumbNailImage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VideoUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LikesCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VideoTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VideoDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VideoCategory)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@
