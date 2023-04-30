@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var Videos = (List<OnlineVideoStreamingApp.Models.YoutubeVideoModel>)ViewData["Videos"];
+
+}
+<div>Stream Unlimited Videos Here!</div>
+
+
+
+@if(Videos != null){
+    <div class="videos_container d-flex flex-wrap">
+        @foreach (var item in Videos)
+        {
+            if(item.VideoId != null)
+            {
+                <iframe class="m-2" width="250" height="250" src="https://www.youtube.com/embed/@item.VideoId" allowfullscreen></iframe>
+
+            }
+        }
+    </div>
+}

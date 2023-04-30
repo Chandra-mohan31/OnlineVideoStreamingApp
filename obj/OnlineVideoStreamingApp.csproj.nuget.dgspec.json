@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[3.7.104.6, )"
             },
+            "Google.Apis.YouTube.v3": {
+              "target": "Package",
+              "version": "[1.60.0.2945, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.15, )"
