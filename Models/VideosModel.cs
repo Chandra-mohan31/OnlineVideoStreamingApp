@@ -20,5 +20,7 @@ namespace OnlineVideoStreamingApp.Models
         public string VideoDescription { get; set; }    
 
         public string VideoCategory { get; set; }
+
+        public DateTime? VideoPostedOn { get; set; }
     }
 }

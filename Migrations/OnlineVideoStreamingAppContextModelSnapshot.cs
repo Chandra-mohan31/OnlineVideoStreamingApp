@@ -239,6 +239,9 @@ namespace OnlineVideoStreamingApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("CommentedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CommentedUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -352,6 +355,9 @@ namespace OnlineVideoStreamingApp.Migrations
                     b.Property<string>("VideoDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VideoPostedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("VideoTitle")
                         .IsRequired()

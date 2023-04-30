@@ -60,7 +60,31 @@
 
     
 </p>
+<form method="post" asp-action="SearchPosts">
+<div class="d-flex justify-content-start search_container">
+    <div class="d-flex align-items-center mx-2">
+        <label class="col-form-label me-2">Search:</label>
+        <div class="">
+            <select id="filter" name="filter">
+                    <option value="VideoCategory">VideoCategory</option>
+                    <option value="VideoTitle">VideoTitle</option>
+                <option value="UserName">UserName</option>
 
+            </select>
+        </div>
+    </div>
+    <div class="mx-2 d-flex align-items-center ">
+        <label class="col-form-label me-2">Value</label>
+        <div class="">
+            <input type="text" class="form-control" placeholder="enter the search term" name="Val" value="" />
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-primary" type="submit">Search</button>
+        <a class="btn btn_primary text-decoration-none border-1 border-secondary" href="VideosModels">Remove filter</a>
+    </div>
+</div>
+</form>
 
 
 <div class="d-flex flex-wrap">
@@ -80,6 +104,24 @@
                </div>
 
                 <li class="list-group-item"><strong>Category:</strong> @item.VideoCategory</li>
+                @if (item.VideoPostedOn != null)
+                {
+                    <li class="list-group-item"><strong>Posted On :</strong> @item.VideoPostedOn</li>
+                    <li class="list-group-item">
+                        @{
+                                    TimeSpan timeSincePosted = (DateTime)DateTime.Now - (DateTime)item.VideoPostedOn;
+                                    if (timeSincePosted.TotalDays >= 1)
+                                    {
+                                        @($"{Math.Floor(timeSincePosted.TotalDays)} days ago")
+                                    }
+                                    else
+                                    {
+                                        @($"{timeSincePosted.Hours} hours, {timeSincePosted.Minutes} minutes ago")
+                                    }
+                                }
+                    </li>
+
+            }
             </ul>
             <div class="card-footer">
                 @*<a href="@item.VideoUrl" class="btn btn-primary">Watch Video</a>*@
@@ -94,7 +136,12 @@
 </div>
 
 <style>
-   
+   .search_container{
+       border: 0.5px solid black;
+       border-radius: 10px;
+       padding: 5px;
+
+   }
 
     .users-container {
         display: flex;
@@ -148,57 +195,4 @@
 
 </style>
 
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ThumbNailImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LikesCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoCategory)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ThumbNailImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VideoUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LikesCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VideoTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VideoDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VideoCategory)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>*@
+

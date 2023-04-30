@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Subscribed Videos</h1>
+<h4>Your Videos</h4>
 
 <p>
-    <a asp-action="Create">Upload a new video</a>
+    <a asp-action="Create" class="btn btn-primary text-white">Upload a new video</a>
 </p>
 
 
@@ -21,16 +21,25 @@
                 <h5 class="card-title">@item.VideoTitle</h5>
                 <p class="card-text">@item.VideoDescription</p>
             </div>
+        
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Category:</strong> @item.VideoCategory</li>
-            </ul>
+
+                <li class="list-group-item border-0"><strong>Posted By:</strong> You</li>
+
+        <li class="list-group-item"><strong>Category:</strong> @item.VideoCategory</li>
+                @if (item.VideoPostedOn != null)
+                {
+            <li class="list-group-item"><strong>Posted On :</strong> @item.VideoPostedOn</li>
+
+                }
+        </ul>
             <div class="card-footer">
                 @*<a href="@item.VideoUrl" class="btn btn-primary">Watch Video</a>*@
                 <a asp-action="PlayVideo" asp-route-id="@item.Id" class="btn btn-primary">Play Video</a>
 
-                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Edit Video Details</a>
+                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Edit Video</a>
             @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Watch Video</a>*@
-            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger align-content-center">X</a>
             </div>
         </div>
     }

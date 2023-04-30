@@ -57,6 +57,7 @@ namespace OnlineVideoStreamingApp.Controllers
             var videos = await _context.videos.Where(v => subscribedUsersId.Contains(v.PostedByUser.Id)).ToListAsync();
 
 
+            videos.Sort((v1, v2) => DateTime.Compare((DateTime)v2.VideoPostedOn, (DateTime)v1.VideoPostedOn));
 
 
 
@@ -68,7 +69,8 @@ namespace OnlineVideoStreamingApp.Controllers
         {
             var userId = _userManager.GetUserId(this.User);
             var videos = await _context.videos.Where(video => video.PostedByUser.Id == userId).ToListAsync();
-           
+
+            videos.Sort((v1, v2) => DateTime.Compare((DateTime)v2.VideoPostedOn, (DateTime)v1.VideoPostedOn));
 
             return _context.videos != null ?
                         View(videos) :
@@ -101,6 +103,10 @@ namespace OnlineVideoStreamingApp.Controllers
             ViewData["COMMENTS"] = COMMENTS;
 
             ViewData["LIKES_COUNT"] = LIKES_COUNT;
+
+            var currUserId = _userManager.GetUserId(this.User);
+            ViewData["currUserId"] = currUserId;
+
 
             return View(videosModel);
         }
@@ -200,13 +206,16 @@ namespace OnlineVideoStreamingApp.Controllers
                 var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
                 Console.WriteLine(user.UserName);
                 videosModel.PostedByUser = user;
+                videosModel.VideoPostedOn = DateTime.Now;
 
                 _context.Add(videosModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("YourVideos","VideosModels");
+
             }
 
-            
+
             return View(videosModel);
         }
 
@@ -244,6 +253,7 @@ namespace OnlineVideoStreamingApp.Controllers
                 var userId = _userManager.GetUserId(this.User);
                 var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
                 videosModel.PostedByUser = user;
+                videosModel.VideoPostedOn = DateTime.Now;
                 _context.Update(videosModel);
                     await _context.SaveChangesAsync();
                 }
@@ -405,6 +415,7 @@ namespace OnlineVideoStreamingApp.Controllers
             commentModel.Comment = comment;
             commentModel.Video = video;
             commentModel.CommentedUser = user;
+            commentModel.CommentedOn = DateTime.Now;
 
 
             _context.commentsTable.Add(commentModel);
@@ -416,6 +427,81 @@ namespace OnlineVideoStreamingApp.Controllers
 
         }
 
+
+        //uncomment on post 
+        [HttpPost("UnComment")]
+        public async Task<IActionResult> UnComment(string commentId,string videoId)
+        {
+            Console.WriteLine("Inside UnComment");
+            Console.WriteLine("The comment Id : " + commentId);
+            Console.WriteLine("The video Id : " + videoId);
+            var currUserId = _userManager.GetUserId(this.User);
+            int cId = int.Parse(commentId);
+            var commentsInfoModel = await _context.commentsTable.FindAsync(cId);
+            //Console.WriteLine("comment id to be deleted : " + commentsInfoModel.Id);
+            if (commentsInfoModel != null)
+                _context.commentsTable.Remove(commentsInfoModel);
+
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("PlayVideo", "VideosModels", new { id = videoId });
+
+
+        }
+
+
+
+
+
+
+
+        [HttpPost("SearchPosts")]
+        public async Task<IActionResult> SearchPosts(string filter,string Val)
+        {
+
+            Console.WriteLine($"Search terms : filter : {filter} value : {Val}");
+            var userId = _userManager.GetUserId(this.User);
+
+            var subscribedUsersId = _context.subscriptionInfo
+                        .Where(s => s.Subscriber.Id == userId)
+                        .Select(s => s.Subscribee.Id).ToList();
+
+            foreach (var item in subscribedUsersId)
+            {
+                Console.WriteLine("SUBSCRIBED TO : " + item);
+            }
+            ViewData["subscribedUsersId"] = subscribedUsersId;
+            ViewData["currUserId"] = userId;
+            //var users = _userManager.Users.Where(u => !subscribedUsersId.Contains(u.Id)).ToList();
+            var users = _userManager.Users.ToList();
+
+            foreach (var user in users)
+            {
+                Console.WriteLine(user.ProfileImageUrl);
+            }
+
+            ViewData["users"] = users;
+
+            var videos = await _context.videos.Where(v => subscribedUsersId.Contains(v.PostedByUser.Id)).ToListAsync();
+
+
+            videos.Sort((v1, v2) => DateTime.Compare((DateTime)v2.VideoPostedOn, (DateTime)v1.VideoPostedOn));
+
+            if(filter == "VideoCategory")
+            {
+                videos = videos.Where(v => v.VideoCategory == Val).ToList();
+            }else if(filter == "VideoTitle")
+            {
+               videos = videos.Where(v => v.VideoTitle == Val).ToList();
+            }else if( filter == "UserName")
+            {
+                videos = videos.Where(v => v.PostedByUser.UserName == Val).ToList();
+            }
+            
+            return _context.videos != null ?
+                          View(videos) :
+                          Problem("Entity set 'OnlineVideoStreamingAppContext.videos'  is null.");
+        }
         private bool VideosModelExists(int id)
         {
           return (_context.videos?.Any(e => e.Id == id)).GetValueOrDefault();

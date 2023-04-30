@@ -13,5 +13,7 @@ namespace OnlineVideoStreamingApp.Models
         public string Comment { get; set; }
 
         public OnlineVideoStreamingAppUser CommentedUser { get; set; }  
+
+        public DateTime? CommentedOn { get; set; }
     }
 }
