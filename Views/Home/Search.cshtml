@@ -5,7 +5,58 @@
     var Videos = (List<OnlineVideoStreamingApp.Models.YoutubeVideoModel>)ViewData["Videos"];
 
 }
-<div>Stream Unlimited Videos Here!</div>
+<div class="search_query_container">
+    <form asp-action="SearchByCategory">
+        <input type="text" value="" name="query" />
+        <input type="submit" value="Search" />
+
+    </form>
+</div>
+<div class="categories_container">
+    <div class="category">
+        <form asp-action="SearchByCategory">
+            <input type="submit" value="Music" name="query" />
+
+        </form>
+    </div>
+    <div class="category">
+        <form asp-action="SearchByCategory">
+            <input type="submit" value="Movies" name="query" />
+
+        </form>
+    </div>
+    <div class="category">
+        <form asp-action="SearchByCategory">
+            <input type="submit" value="Indian Premer League" name="query" />
+
+        </form>
+    </div>
+    <div class="category">
+        <form asp-action="SearchByCategory">
+            <input type="submit" value="Weight Training" name="query" />
+
+        </form>
+    </div>
+    <div class="category">
+        <form asp-action="SearchByCategory">
+            <input type="submit" value="Calisthenics" name="query" />
+
+        </form>
+    </div>
+    <div class="category">
+        <form asp-action="SearchByCategory">
+            <input type="submit" value="Computer Programming" name="query" />
+
+        </form>
+    </div>
+    <div class="category">
+        <form asp-action="SearchByCategory">
+            <input type="submit" value="Football" name="query" />
+
+        </form>
+    </div>   
+
+</div>
 
 
 
@@ -21,3 +72,56 @@
         }
     </div>
 }
+
+        <style>
+    .categories_container{
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 10px;
+
+    }
+
+    .categories_container > div > form > input{
+        border: none;
+        border-radius: 10px;
+        padding: 2px;
+        
+        }
+    .category{
+        margin: 2px;
+
+    }
+
+    .search_query_container form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search_query_container input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+    }
+
+    .search_query_container input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+    }
+
+        .search_query_container input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        </style>

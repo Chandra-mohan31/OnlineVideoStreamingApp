@@ -1,0 +1,71 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var SAVED_POSTS = (List<OnlineVideoStreamingApp.Models.SavedPostsModelcs>)ViewData["SAVED_POSTS"];
+}
+<h3>Saved posts</h3>
+
+
+<div class="d-flex flex-wrap">
+    @foreach (var item in SAVED_POSTS)
+    {
+        <div class="card mb-4 mr-4 m-4" style="width: 300px;">
+            <img class="card-img-top" src="@item.SavedVideo.ThumbNailImage" alt="Card image cap" style="height: 150px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">@item.SavedVideo.VideoTitle</h5>
+                <p class="card-text">@item.SavedVideo.VideoDescription</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <div class="d-flex justify-content-center">
+                    <img src="@item.SavedVideo.PostedByUser.ProfileImageUrl" alt="Profile Image" class="rounded-avatar" />
+
+                <li class="list-group-item border-0"><strong>Posted By:</strong> @item.SavedVideo.PostedByUser.UserName</li>
+        </div>
+
+        <li class="list-group-item"><strong>Category:</strong> @item.SavedVideo.VideoCategory</li>
+                @if (item.SavedVideo.VideoPostedOn != null)
+                {
+            <li class="list-group-item"><strong>Posted On :</strong> @item.SavedVideo.VideoPostedOn</li>
+            <li class="list-group-item">
+                        @{
+                            TimeSpan timeSincePosted = (DateTime)DateTime.Now - (DateTime)item.SavedVideo.VideoPostedOn;
+                            if (timeSincePosted.TotalDays >= 1)
+                            {
+                                @($"{Math.Floor(timeSincePosted.TotalDays)} days ago")
+                            }
+                            else
+                            {
+                                @($"{timeSincePosted.Hours} hours, {timeSincePosted.Minutes} minutes ago")
+                            }
+                        }
+            </li>
+                }
+        </ul>
+        <div class="card-footer d-flex justify-content-between">
+
+            <a asp-action="PlayVideo" asp-route-id="@item.SavedVideo.Id" class="btn btn-primary">Play Video</a>
+
+            <form asp-action="UnSavePost">
+                <input type="text" value="@item.Id" name="saved_post_id" hidden />
+                <input type="submit" value="UnSave Post" class="un_save_button" />
+            </form>
+
+        </div>
+    </div>
+
+
+    }
+
+            <style>
+    .un_save_button{
+    background-color: grey;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    }
+            </style>

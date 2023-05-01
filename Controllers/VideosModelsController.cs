@@ -87,7 +87,7 @@ namespace OnlineVideoStreamingApp.Controllers
 
             var videosModel = await _context.videos.Include(user => user.PostedByUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            Console.WriteLine("Posted By user : " + videosModel.PostedByUser.UserName);
+
             if (videosModel == null)
             {
                 return NotFound();
@@ -502,6 +502,86 @@ namespace OnlineVideoStreamingApp.Controllers
                           View(videos) :
                           Problem("Entity set 'OnlineVideoStreamingAppContext.videos'  is null.");
         }
+
+
+        //save videos 
+
+        [HttpPost("SavePost")]
+        public async Task<IActionResult> SavePost(string video_id)
+        {
+            Console.WriteLine("In Save Post");
+
+            Console.WriteLine(video_id);
+            var userId = _userManager.GetUserId(this.User);
+            var user = await _userManager.FindByIdAsync(userId);
+            var videoId = int.Parse(video_id);
+            var video = await _context.videos.Where(v => v.Id == videoId).FirstOrDefaultAsync();
+
+
+            SavedPostsModelcs postToSave = new SavedPostsModelcs();
+
+            postToSave.User = user;
+            postToSave.SavedVideo = video;
+
+            _context.savedVideos.Add(postToSave);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("SavedPosts", "VideosModels");
+
+
+        }
+
+
+        public async Task<IActionResult> SavedPosts()
+        {
+
+            var userId = _userManager.GetUserId(this.User);
+            var user = await _userManager.FindByIdAsync(userId);
+            //var videoId = int.Parse(video_id);
+            //var video = await _context.videos.Where(v => v.Id == videoId).FirstOrDefaultAsync();
+
+            var SAVED_POSTS = _context.savedVideos.Include(s => s.SavedVideo).Include(s => s.SavedVideo.PostedByUser).Where(l => l.User.Id == userId).ToList();
+
+            //foreach(var item in SAVED_POSTS)
+            //{
+            //    Console.WriteLine(item.SavedVideo.Id);
+            //    Console.WriteLine(item.SavedVideo.VideoTitle);
+            //    Console.WriteLine(item.SavedVideo.VideoDescription);
+
+
+
+            //}
+            ViewData["SAVED_POSTS"] = SAVED_POSTS;
+
+
+
+
+
+
+            return View();
+
+
+        }
+
+
+        public async Task<IActionResult> UnSavePost(string saved_post_id)
+        {
+
+            Console.WriteLine("the id from the table to be deleted to unsave post : " + saved_post_id);
+            int saved_post_table_id = int.Parse(saved_post_id);
+            var savedPostToBeDeleted = await _context.savedVideos.FindAsync(saved_post_table_id);
+            //Console.WriteLine("comment id to be deleted : " + commentsInfoModel.Id);
+            if (savedPostToBeDeleted != null)
+                _context.savedVideos.Remove(savedPostToBeDeleted);
+
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "VideosModels");
+        }
+
+
+
         private bool VideosModelExists(int id)
         {
           return (_context.videos?.Any(e => e.Id == id)).GetValueOrDefault();

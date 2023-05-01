@@ -123,11 +123,15 @@
 
             }
             </ul>
-            <div class="card-footer">
-                @*<a href="@item.VideoUrl" class="btn btn-primary">Watch Video</a>*@
-               @*<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Edit</a>*@
+            <div class="card-footer d-flex justify-content-between">
+              
                 <a asp-action="PlayVideo" asp-route-id="@item.Id" class="btn btn-primary">Play Video</a>
-                @*<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>*@
+
+                <form asp-action="SavePost">
+                    <input type="text" value="@item.Id" name="video_id" hidden/>
+                    <input type="submit" value="Save Post" class="save_button" />
+                </form>
+
             </div>
         </div>
 
@@ -191,6 +195,17 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
+    }
+
+    .save_button{
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
     }
 
 </style>
