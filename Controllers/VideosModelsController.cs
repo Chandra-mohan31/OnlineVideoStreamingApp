@@ -92,6 +92,25 @@ namespace OnlineVideoStreamingApp.Controllers
             {
                 return NotFound();
             }
+            var currUserId = _userManager.GetUserId(this.User);
+            ViewData["currUserId"] = currUserId;
+            var VIEWS_LIST = _context.VideoViewsTable.Where(v => v.Video.Id == id).Select(u => u.ViewedUser.Id).ToList();
+            if (!VIEWS_LIST.Contains(currUserId))
+            {
+                VIEWS_LIST.Add(currUserId);
+                VideoViewsModel viewsData = new VideoViewsModel();
+                var user = _userManager.Users.FirstOrDefault(u => u.Id == currUserId);
+                
+                viewsData.ViewedUser = user;
+                viewsData.Video = videosModel;
+
+                _context.Add(viewsData);
+                await _context.SaveChangesAsync();
+            }
+
+            var VIEWS_COUNT = VIEWS_LIST.Count();
+            ViewData["VIEWS_COUNT"] = VIEWS_COUNT;
+
 
             var LIKES_COUNT = _context.likesTable.Where(l => l.Video.Id == id).Count();
 
@@ -104,8 +123,7 @@ namespace OnlineVideoStreamingApp.Controllers
 
             ViewData["LIKES_COUNT"] = LIKES_COUNT;
 
-            var currUserId = _userManager.GetUserId(this.User);
-            ViewData["currUserId"] = currUserId;
+            
 
 
             return View(videosModel);

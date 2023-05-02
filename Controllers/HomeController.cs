@@ -15,7 +15,7 @@ namespace OnlineVideoStreamingApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
     
-
+        
         
 
     
@@ -28,7 +28,16 @@ namespace OnlineVideoStreamingApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "VideosModels");
+            }
+            else
+            {
+                return Redirect("/Identity/Account/Login");
+
+
+            }
         }
 
         public IActionResult Privacy()

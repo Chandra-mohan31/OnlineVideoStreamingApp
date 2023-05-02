@@ -38,15 +38,22 @@
                 }
             }
         </p>
+        <form asp-action="LikePost">
+            <input type="text" value="@Model.Id" name="video_id" hidden />
+            <div class="d-flex flex-row align-items-center">
+                <button type="submit" class="border-0">
+                    <i class="fas fa-thumbs-up"></i>
+                </button>
+                <span>@ViewData["LIKES_COUNT"] &nbsp;&nbsp;&nbsp;  Views : @ViewData["VIEWS_COUNT"] </span>
+
+            </div>
+
+        </form>
     </div>
 </div>
 
-<div class="likes_comments_container">
-    <form asp-action="LikePost">
-        <input type="text" value="@Model.Id" name="video_id" hidden />
-        <p>lIKES : @ViewData["LIKES_COUNT"]</p>
-        <button type="submit">Like Post</button>
-    </form>
+<div class="main_comments_container">
+ 
     @if(comments != null){
     <div class="comments_container">
      
@@ -76,15 +83,15 @@
             }
     </div>
     }
-    <form asp-action="CommentOnPost">
+    <form asp-action="CommentOnPost" class="d-flex align-items-center justify-content-between">
         <input type="text" value="@Model.Id" name="video_id" hidden />
-        <input type="text" name="comment"  />
+        <input type="text" name="comment" class="comment_input_box" />
 
-        <button type="submit">Post Comment</button>
+        <button type="submit" class="btn btn-secondary text-white">Comment</button>
     </form>
 </div>
 <div>
-    <a asp-action="Index" class="btn btn-primary">Back to Subscribed Videos</a>
+    <a asp-action="Index" class="btn btn-primary m-10">Back to Subscribed Videos</a>
 </div>
 
 <style>
@@ -145,5 +152,14 @@
         line-height: 1.4;
     }
 
+    .comment_input_box {
+        width: 90%;
+        padding: 5px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        margin: 5px;
+    }
 
 </style>

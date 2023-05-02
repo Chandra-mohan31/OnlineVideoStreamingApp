@@ -19,6 +19,8 @@ public class OnlineVideoStreamingAppContext : IdentityDbContext<OnlineVideoStrea
     public DbSet<CommentsInfoModel> commentsTable { get; set; }
     public DbSet<CustomerSupportModel> customerSupportTable { get; set; }
     public DbSet<SavedPostsModelcs> savedVideos { get; set; }
+    public DbSet<VideoViewsModel> VideoViewsTable { get; set; }
+
 
 
 
