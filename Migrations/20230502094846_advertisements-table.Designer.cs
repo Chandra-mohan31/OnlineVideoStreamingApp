@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineVideoStreamingApp.Data;
 
@@ -11,9 +12,11 @@ using OnlineVideoStreamingApp.Data;
 namespace OnlineVideoStreamingApp.Migrations
 {
     [DbContext(typeof(OnlineVideoStreamingAppContext))]
-    partial class OnlineVideoStreamingAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230502094846_advertisements-table")]
+    partial class advertisementstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,7 +239,7 @@ namespace OnlineVideoStreamingApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdPostedById")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AdPosterUrl")
                         .IsRequired()
@@ -254,6 +257,8 @@ namespace OnlineVideoStreamingApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdPostedById");
 
                     b.ToTable("adverstisements");
                 });
@@ -502,6 +507,15 @@ namespace OnlineVideoStreamingApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OnlineVideoStreamingApp.Models.AdvertisementsModel", b =>
+                {
+                    b.HasOne("OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser", "AdPostedBy")
+                        .WithMany()
+                        .HasForeignKey("AdPostedById");
+
+                    b.Navigation("AdPostedBy");
                 });
 
             modelBuilder.Entity("OnlineVideoStreamingApp.Models.CommentsInfoModel", b =>

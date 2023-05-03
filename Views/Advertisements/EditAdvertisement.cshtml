@@ -1,0 +1,51 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+@model OnlineVideoStreamingApp.Models.AdvertisementsModel
+
+<h1>Edit the AD</h1>
+
+<form asp-action="EditAdvertisement" method="post" enctype="multipart/form-data">
+
+    @*change image here*@
+    <div class="form-group">
+        <label for="adTitle">Advertisement Title:</label>
+        <input type="text" class="form-control" id="adTitle" name="AdvertisementTitle" value="@Model.AdvertisementTitle">
+    </div>
+
+    <div class="form-group">
+        <label for="adDescription">Advertisement Description:</label>
+        <textarea class="form-control" id="adDescription" name="AdvertisementDescription">@Model.AdvertisementDescription</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="productLink">Product Link:</label>
+        <input type="text" class="form-control" id="productLink" name="productLink" value="@Model.productLink">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="posterUrl" name="AdPosterUrl" value="@Model.AdPosterUrl" hidden>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="id" name="id" value="@Model.Id" hidden>
+    </div>
+
+    <div class="form-group d-flex flex-column">
+        <label class="control-label">Choose an Advertisement Poster</label>
+        <img class="Ad-poster" src="@Model.AdPosterUrl" alt="poster" />
+
+        <input type="file" name="adPoster" class="form-control" />
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Edit Ad</button>
+</form>
+
+        <style>
+            .Ad-poster{
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+            }
+        </style>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineVideoStreamingApp.Data;
 
@@ -11,9 +12,11 @@ using OnlineVideoStreamingApp.Data;
 namespace OnlineVideoStreamingApp.Migrations
 {
     [DbContext(typeof(OnlineVideoStreamingAppContext))]
-    partial class OnlineVideoStreamingAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230502094558_ads-and-queries")]
+    partial class adsandqueries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,37 +228,6 @@ namespace OnlineVideoStreamingApp.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("OnlineVideoStreamingApp.Models.AdvertisementsModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AdPostedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdPosterUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdvertisementDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdvertisementTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("productLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("adverstisements");
                 });
 
             modelBuilder.Entity("OnlineVideoStreamingApp.Models.CommentsInfoModel", b =>

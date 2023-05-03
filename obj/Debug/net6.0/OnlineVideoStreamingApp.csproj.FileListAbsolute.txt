@@ -302,3 +302,4 @@ C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Google.Apis.
 C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Google.Apis.Auth.dll
 C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Google.Apis.Core.dll
 C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Google.Apis.YouTube.v3.dll
+C:\Users\DELL\source\repos\OnlineVideoStreamingApp\bin\Debug\net6.0\Razorpay.dll

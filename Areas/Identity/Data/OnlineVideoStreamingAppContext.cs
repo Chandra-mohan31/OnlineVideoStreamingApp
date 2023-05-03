@@ -21,7 +21,7 @@ public class OnlineVideoStreamingAppContext : IdentityDbContext<OnlineVideoStrea
     public DbSet<SavedPostsModelcs> savedVideos { get; set; }
     public DbSet<VideoViewsModel> VideoViewsTable { get; set; }
 
-
+    public DbSet<AdvertisementsModel> adverstisements { get; set; }
 
 
 

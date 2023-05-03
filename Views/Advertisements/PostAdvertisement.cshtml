@@ -1,0 +1,97 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var currUser = (OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser)ViewData["currUser"];
+}
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function PaymentProcess(accessKey,orderId,name,email,contact) {
+        event.preventDefault();
+        console.log("In payment");
+        
+       if(contact.length == 0){
+            contact = "+919000090000";
+       }
+        var amount = 100;
+        name = name.substring(0,4);
+        console.log(orderId);
+        var options = {
+            "key": accessKey,
+            "amount": "100",
+            "currency": "INR",
+            "name": "OnlineVideoStreamingApp",
+            "description": "Pay for Advertising",
+            "order_id": orderId,
+            "image": "https://example.com/your_logo",
+            "handler": function (response) {
+                console.log(response);
+                if (response.razorpay_payment_id){
+                    let button = document.getElementById('post_ad_btn');
+                    let payment_div = document.getElementById('payment_section');
+
+                    let paymentSuccessDiv = document.createElement('div');
+                    paymentSuccessDiv.textContent = 'Your payment was successfull!' + 'payment Id : ' + response.razorpay_payment_id;
+                    paymentSuccessDiv.style.backgroundColor = '#eee';
+                    paymentSuccessDiv.style.padding = '10px';
+                    payment_div.appendChild(paymentSuccessDiv);
+                    button.removeAttribute('hidden');
+                    let payBtn = document.getElementById('pay_btn');
+                    payBtn.style.display = 'none';
+                }else{
+                    alert("payment failed ! try again");
+                }
+              
+            },
+            "prefill": {
+                "name": name,
+                "email": email,
+                "contact": contact,
+            },
+         
+            "notes": {
+                "address": "Hello World"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        }
+        var rzp = new Razorpay(options);
+        rzp.open();
+    }
+</script>
+<form asp-action="PostAdvertisement" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="adTitle">Advertisement Title:</label>
+        <input type="text" class="form-control" id="adTitle" name="AdvertisementTitle">
+    </div>
+    
+    <div class="form-group">
+        <label for="adDescription">Advertisement Description:</label>
+        <textarea class="form-control" id="adDescription" name="AdvertisementDescription"></textarea>
+    </div>
+  
+    <div class="form-group">
+        <label for="productLink">Product Link:</label>
+        <input type="text" class="form-control" id="productLink" name="productLink">
+    </div>
+    <div class="form-group">
+        <label class="control-label">Choose an Advertisement Poster</label>
+        <input type="file" name="adPoster" class="form-control" />
+    </div>
+    <p>**you have to make a payment to publish your advertisements**</p>
+  <div id="payment_section">
+        @if (ViewData["orderId"] != null && ViewData["razor_pay_access_key"] != null)
+        {
+            <button class="btn btn-info" id="pay_btn" onclick="PaymentProcess('@ViewData["razor_pay_access_key"]','@ViewData["orderId"]','@currUser.UserName','@currUser.Email','@currUser.PhoneNumber')">Pay Rs.100</button>
+
+        }
+        else
+        {
+            <div>**payment option is down try after a while!**</div>
+        }
+  </div>
+    <button type="submit" id="post_ad_btn" class="btn btn-primary" hidden>Post Ad</button>
+</form>

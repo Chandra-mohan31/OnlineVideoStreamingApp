@@ -1,0 +1,108 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<OnlineVideoStreamingApp.Models.AdvertisementsModel>
+
+<h1>Your Posted Advertisements</h1>
+<a href="Advertisements/PostAdvertisement" class="btn btn-primary">POST ADS</a>
+@if (Model.Any())
+{
+    <div class="d-flex flex-wrap">
+        @foreach (var ad in Model)
+        {
+        <div class="card">
+            <a class="img-card" href="@ad.productLink">
+                <img src="@ad.AdPosterUrl" />
+            </a>
+            <div class="card-content">
+                <h4 class="card-title">
+                    <a href="@ad.productLink">
+                        @ad.AdvertisementTitle
+                    </a>
+                </h4>
+                <p class="">
+                    @ad.AdvertisementDescription
+                </p>
+            </div>
+            <hr />
+            <div class="card-read-more d-flex justify-content-between">
+                <h5><strong>AD</strong></h5>
+                <a href="@Url.Action("EditAdvertisement", "Advertisements", new { id = ad.Id})" class="btn btn-link btn-block">
+                    Edit Ad
+                </a>
+                <form asp-action="DelAd">
+                    <input type="text" value="@ad.Id" name="adId" hidden />
+                    <input type="submit" value="X" class="btn btn-danger" />
+                </form>
+
+            </div>
+        </div>
+        }
+    </div>
+}
+
+                        <style>
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        margin: 10px;
+        padding: 10px;
+        width: 300px;
+        height: 100%;
+        background-color: #fff;
+    }
+
+        .card .img-card {
+            display: block;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+            .card .img-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .card .card-content {
+            padding: 10px 0;
+        }
+
+        .card .card-title {
+            font-size: 18px;
+            margin: 0;
+        }
+
+            .card .card-title a {
+                color: #333;
+                text-decoration: none;
+            }
+
+                .card .card-title a:hover {
+                    color: #007bff;
+                }
+
+        .card p {
+            margin: 0;
+        }
+
+        .card .card-read-more {
+            text-align: center;
+        }
+
+            .card .card-read-more a {
+                color: #007bff;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .card .card-read-more a:hover {
+                    text-decoration: underline;
+                }
+
+                        </style>

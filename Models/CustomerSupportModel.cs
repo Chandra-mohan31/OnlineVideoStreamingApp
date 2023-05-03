@@ -11,6 +11,8 @@ namespace OnlineVideoStreamingApp.Models
 
         public string Query { get; set; }
 
-        public string status { get; set; }
+        public string? Status { get; set; }
+        public string? Reply { get; set; }
+
     }
 }

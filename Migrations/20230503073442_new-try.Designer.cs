@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineVideoStreamingApp.Data;
 
@@ -11,9 +12,11 @@ using OnlineVideoStreamingApp.Data;
 namespace OnlineVideoStreamingApp.Migrations
 {
     [DbContext(typeof(OnlineVideoStreamingAppContext))]
-    partial class OnlineVideoStreamingAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230503073442_new-try")]
+    partial class newtry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

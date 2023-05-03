@@ -6,7 +6,9 @@
     ViewData["Title"] = "Index";
     var users = (List<OnlineVideoStreamingApp.Areas.Identity.Data.OnlineVideoStreamingAppUser>)ViewData["users"];
     var subscribedUsersId = (List<string>)ViewData["subscribedUsersId"];
+    var ads = (List<OnlineVideoStreamingApp.Models.AdvertisementsModel>)ViewData["ads"];
 }
+
 
 
 @if(ViewData["users"] != null)
@@ -48,6 +50,7 @@
 
 
 }
+
 
 <h5>Subscribed Videos</h5>
 
@@ -94,7 +97,11 @@
         @foreach (var item in Model)
         {
             <div class="card mb-4 mr-4 m-4" style="width: 300px;">
-                <img class="card-img-top" src="@item.ThumbNailImage" alt="Card image cap" style="height: 150px; object-fit: cover;">
+                @*<img class="card-img-top" src="@item.ThumbNailImage" alt="Card image cap" style="height: 150px; object-fit: cover;">*@
+
+                <video class="card-img-top" poster="@item.ThumbNailImage" style="height: 150px; object-fit: cover;" controls src="@item.VideoUrl" onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+
+
                 <div class="card-body">
                     <h5 class="card-title">@item.VideoTitle</h5>
                     <p class="card-text">@item.VideoDescription</p>
@@ -143,7 +150,37 @@
             </div>
 
         }
+        @if (ads != null && ads.Count > 0)
+        {
+            foreach (var ad in ads)
+            {
+            <div class="card">
+                <a class="img-card" href="@ad.productLink">
+                    <img src="@ad.AdPosterUrl" />
+                </a>
+                <div class="card-content">
+                    <h4 class="card-title">
+                        <a href="@ad.productLink">
+                            @ad.AdvertisementTitle
+                        </a>
+                    </h4>
+                    <p class="">
+                        @ad.AdvertisementDescription
+                    </p>
+                </div>
+                <hr />
+                <div class="card-read-more d-flex justify-content-between">
+                    <h5><strong>AD</strong></h5>
+                    <a href="@ad.productLink" class="btn btn-link btn-block">
+                        More Details
+                    </a>
+                </div>
+            </div>
+            }
+        }
+
     </div>
+
 }
 else
 {
@@ -216,6 +253,66 @@ else
         font-size: 16px;
         font-family: Arial, sans-serif;
     }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        margin: 10px;
+        padding: 10px;
+        width: 300px;
+        height: 100%;
+        background-color: #fff;
+    }
+
+        .card .img-card {
+            display: block;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+            .card .img-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .card .card-content {
+            padding: 10px 0;
+        }
+
+        .card .card-title {
+            font-size: 18px;
+            margin: 0;
+        }
+
+            .card .card-title a {
+                color: #333;
+                text-decoration: none;
+            }
+
+                .card .card-title a:hover {
+                    color: #007bff;
+                }
+
+        .card p {
+            margin: 0;
+        }
+
+        .card .card-read-more {
+            text-align: center;
+        }
+
+            .card .card-read-more a {
+                color: #007bff;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .card .card-read-more a:hover {
+                    text-decoration: underline;
+                }
 
 </style>
 

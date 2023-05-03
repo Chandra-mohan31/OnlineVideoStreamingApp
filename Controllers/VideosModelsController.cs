@@ -12,6 +12,7 @@ using OnlineVideoStreamingApp.Areas.Identity.Data;
 using OnlineVideoStreamingApp.Data;
 using OnlineVideoStreamingApp.Models;
 using Microsoft.VisualBasic.FileIO;
+using Newtonsoft.Json;
 
 namespace OnlineVideoStreamingApp.Controllers
 {
@@ -21,17 +22,50 @@ namespace OnlineVideoStreamingApp.Controllers
         private readonly UserManager<OnlineVideoStreamingAppUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        
+        private readonly HttpClient _client;
+        //Uri baseAddress = new Uri("https://localhost:7272/api");
         public VideosModelsController(OnlineVideoStreamingAppContext context,UserManager<OnlineVideoStreamingAppUser> userManager,IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
             _configuration = configuration;
+            _client = new HttpClient();
+            //_client.BaseAddress = baseAddress;
+
+        }
+
+
+        //get advertisements from API
+        public List<AdvertisementsModel> getAds()
+        {
+            List<AdvertisementsModel> ads = new List<AdvertisementsModel>();
+            HttpResponseMessage response = _client.GetAsync("https://localhost:7272/api/AdvertisementsModels").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                var s = JsonConvert.DeserializeObject<List<AdvertisementsModel>>(data);
+                if(s != null)
+                {
+                    ads = s;
+                }
+
+                //Console.WriteLine("=============" + s);
+            }
+            return ads;
         }
 
         // GET: VideosModels
         public async Task<IActionResult> Index()
         {
+            List<AdvertisementsModel> ads = getAds();
+            //List<AdvertisementsModel> ads = new();
+            foreach(var ad in ads)
+            {
+                Console.WriteLine("Ad title : " + ad.AdvertisementTitle);
+            }
+
+            ViewData["ads"] = ads;
             var userId = _userManager.GetUserId(this.User);
 
             var subscribedUsersId = _context.subscriptionInfo
@@ -123,7 +157,15 @@ namespace OnlineVideoStreamingApp.Controllers
 
             ViewData["LIKES_COUNT"] = LIKES_COUNT;
 
-            
+
+            var subscribedUsersId = _context.subscriptionInfo
+                        .Where(s => s.Subscriber.Id == currUserId)
+                        .Select(s => s.Subscribee.Id).ToList();
+
+            var suggestedVideos = await _context.videos.Where(v => subscribedUsersId.Contains(v.PostedByUser.Id)).Where(v => (v.VideoCategory == videosModel.VideoCategory || v.PostedByUser == videosModel.PostedByUser) && v.Id != id).Include(v => v.PostedByUser).ToListAsync();
+            ViewData["SUGGESTED_VIDEOS"] = suggestedVideos;
+
+
 
 
             return View(videosModel);

@@ -16,7 +16,9 @@
     @foreach (var item in Model)
     {
         <div class="card mb-4 mr-4 m-4" style="width: 300px;">
-            <img class="card-img-top" src="@item.ThumbNailImage" alt="Card image cap" style="height: 150px; object-fit: cover;">
+            @*<img class="card-img-top" src="@item.ThumbNailImage" alt="Card image cap" style="height: 150px; object-fit: cover;">*@
+            <video class="card-img-top" poster="@item.ThumbNailImage" style="height: 150px; object-fit: cover;" controls src="@item.VideoUrl" onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+
             <div class="card-body">
                 <h5 class="card-title">@item.VideoTitle</h5>
                 <p class="card-text">@item.VideoDescription</p>
