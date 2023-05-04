@@ -125,6 +125,16 @@ namespace OnlineVideoStreamingApp.Controllers
 
             videos.Sort((v1, v2) => DateTime.Compare((DateTime)v2.VideoPostedOn, (DateTime)v1.VideoPostedOn));
 
+            ViewData["videos_count"] = videos.Count;
+
+            ViewData["subscribers"] = _context.subscriptionInfo.Where(sub => sub.Subscribee.Id == userId).ToList().Count;
+
+
+            ViewData["no_channels_subscribed"] = _context.subscriptionInfo.Where(sub => sub.Subscriber.Id == userId).ToList().Count;
+
+
+            ViewData["ads"] = getAds();
+
             return _context.videos != null ?
                         View(videos) :
                         Problem("Entity set 'OnlineVideoStreamingAppContext.videos'  is null.");
