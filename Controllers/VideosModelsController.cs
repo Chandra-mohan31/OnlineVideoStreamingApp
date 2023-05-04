@@ -52,7 +52,26 @@ namespace OnlineVideoStreamingApp.Controllers
 
                 //Console.WriteLine("=============" + s);
             }
-            return ads;
+
+            int count = ads.Count;
+            List<AdvertisementsModel> randomAds = new List<AdvertisementsModel>();
+
+            if (count > 0)
+            {
+                Random rnd = new Random();
+                ads = ads.OrderBy(x => rnd.Next()).ToList();
+
+               
+                for (int i = 0; i < count && i < 3; i++)
+                {
+                    randomAds.Add(ads[i]);
+                }
+            }
+
+            return randomAds;
+
+
+            
         }
 
         // GET: VideosModels
@@ -166,7 +185,7 @@ namespace OnlineVideoStreamingApp.Controllers
             ViewData["SUGGESTED_VIDEOS"] = suggestedVideos;
 
 
-
+            ViewData["ads"] = getAds();
 
             return View(videosModel);
         }

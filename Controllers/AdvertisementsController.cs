@@ -61,12 +61,13 @@ namespace OnlineVideoStreamingApp.Controllers
                 var currUser = _userManager.Users.FirstOrDefault(u => u.Id == userId);
                 ViewData["currUser"] = currUser;
                 
+                
             }
             return View();
         }
 
 
-        public async Task PostAd(string adTitle, string adDescription, string productLink,string posterUrl)
+        public async Task<bool> PostAd(string adTitle, string adDescription, string productLink,string posterUrl)
         {
             string AD_POST_URL = "https://localhost:7272/api/AdvertisementsModels";
             AdvertisementsModel adModel = new AdvertisementsModel();
@@ -85,10 +86,12 @@ namespace OnlineVideoStreamingApp.Controllers
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("advertisement posted successfully");
+                return true;
             }
             else
             {
                 Console.WriteLine("failed");
+                return false;   
             }
 
 
@@ -107,11 +110,15 @@ namespace OnlineVideoStreamingApp.Controllers
                 Console.WriteLine(AdvertisementDescription);
                 Console.WriteLine(AdvertisementTitle);
                 Console.WriteLine(productLink);
-                PostAd(AdvertisementTitle, AdvertisementDescription, productLink, posterUrl);
-            
-            
+                
+                if(await PostAd(AdvertisementTitle, AdvertisementDescription, productLink, posterUrl))
+            {
+                return RedirectToAction("Index", "Advertisements");
 
-            return RedirectToAction("Index","Advertisements");
+            }
+            return View();
+
+
         }
 
         public IActionResult EditAdvertisement(int id)

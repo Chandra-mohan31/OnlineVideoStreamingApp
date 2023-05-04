@@ -28,6 +28,8 @@ namespace OnlineVideoStreamingApp.Controllers
 
         public IActionResult Index()
         {
+
+            ViewData["test"] = "test";
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "VideosModels");

@@ -5,6 +5,8 @@
     ViewData["Title"] = "Video Player";
     var comments =(List<OnlineVideoStreamingApp.Models.CommentsInfoModel>)ViewData["COMMENTS"];
     var SUGGESTED_VIDEOS = (List<OnlineVideoStreamingApp.Models.VideosModel>)ViewData["SUGGESTED_VIDEOS"];
+    var ads = (List<OnlineVideoStreamingApp.Models.AdvertisementsModel>)ViewData["ads"];
+
 }
 
 <h3>@Model.VideoTitle</h3>
@@ -115,7 +117,41 @@
 <div>
     <a asp-action="Index" class="btn btn-primary m-10">Back to Subscribed Videos</a>
 </div>
+@if (ads != null && ads.Count > 0)
+{
+    <hr />
+    <footer class="d-flex flex-wrap">
+        @if (ads != null && ads.Count > 0)
+        {
+            foreach (var ad in ads)
+            {
+                <div class="ad_card">
+                    <a class="img-ad_card" href="@ad.productLink">
+                        <img src="@ad.AdPosterUrl" />
+                    </a>
+                    <div class="ad_card-content">
+                        <h4 class="ad_card-title">
+                            <a href="@ad.productLink">
+                                @ad.AdvertisementTitle
+                            </a>
+                        </h4>
+                        <p class="">
+                            @ad.AdvertisementDescription
+                        </p>
+                    </div>
+                    <hr />
+                    <div class="ad_card-read-more d-flex justify-content-between">
+                        <h5><strong>AD</strong></h5>
+                        <a href="@ad.productLink" class="btn btn-link btn-block">
+                            More Details
+                        </a>
+                    </div>
+                </div>
+            }
+        }
 
+    </footer>
+}
 <style>
     .video_player_container {
         width: 100%;
@@ -214,4 +250,64 @@
             margin: 5px 10px;
         }
 
+
+    .ad_card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        margin: 10px;
+        padding: 10px;
+        width: 300px;
+        height: 100%;
+        background-color: #fff;
+    }
+
+        .ad_card .img-ad_card {
+            display: block;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+            .ad_card .img-ad_card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .ad_card .ad_card-content {
+            padding: 10px 0;
+        }
+
+        .ad_card .ad_card-title {
+            font-size: 18px;
+            margin: 0;
+        }
+
+            .ad_card .ad_card-title a {
+                color: #333;
+                text-decoration: none;
+            }
+
+                .ad_card .ad_card-title a:hover {
+                    color: #007bff;
+                }
+
+        .ad_card p {
+            margin: 0;
+        }
+
+        .ad_card .ad_card-read-more {
+            text-align: center;
+        }
+
+            .ad_card .ad_card-read-more a {
+                color: #007bff;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .ad_card .ad_card-read-more a:hover {
+                    text-decoration: underline;
+                }
 </style>

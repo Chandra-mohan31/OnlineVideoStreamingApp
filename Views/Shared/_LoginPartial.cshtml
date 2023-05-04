@@ -16,19 +16,30 @@
             <a class="nav-link text-dark navbarElement" asp-area="" asp-controller="VideosModels" asp-action="YourVideos">Your Videos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark navbarElement" asp-area="" asp-controller="VideosModels" asp-action="SavedPosts">Saved Videos</a>
+            <a class="nav-link text-dark navbarElement" asp-area="" asp-controller="VideosModels" asp-action="SavedPosts">
+                <i class="fas fa-bookmark"></i> Saved Videos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark navbarElement" asp-area="" asp-controller="Advertisements" asp-action="Index">
+                <i class="fas fa-bullhorn"></i>
+                 Post Ads
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark navbarElement" asp-area="" asp-controller="CustomerSupportModels" asp-action="Index">
+                <i class="fas fa-headset"></i>
+                Customer Support
+            </a>
         </li>
         </div>
 
         <li class="nav-item">
             <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                <strong>Hello @UserManager.GetUserName(User)!</strong>
+                @*<strong>Hello @UserManager.GetUserName(User)!</strong>*@
                 <img src="@userProfileImageUrl" alt="Profile Image" class="rounded-avatar">
             </a>
         </li>
-@*    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>*@
+
     <li class="nav-item">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button id="logout" type="submit" class="nav-link btn btn-primary text-white">Logout</button>
@@ -53,6 +64,7 @@ else
         height: 40px;
         object-fit: cover;
     }
+
 
   
 </style>

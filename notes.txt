@@ -1,0 +1,22 @@
+﻿ <div class="ad_card">
+                    <a class="img-ad_card" href="@ad.productLink">
+                        <img src="@ad.AdPosterUrl" />
+                    </a>
+                    <div class="ad_card-content">
+                        <h4 class="ad_card-title">
+                            <a href="@ad.productLink">
+                                @ad.AdvertisementTitle
+                            </a>
+                        </h4>
+                        <p class="">
+                            @ad.AdvertisementDescription
+                        </p>
+                    </div>
+                    <hr />
+                    <div class="ad_card-read-more d-flex justify-content-between">
+                        <h5><strong>AD</strong></h5>
+                        <a href="@ad.productLink" class="btn btn-link btn-block">
+                            More Details
+                        </a>
+                    </div>
+                </div>

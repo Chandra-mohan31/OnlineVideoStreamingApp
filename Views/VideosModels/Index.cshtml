@@ -19,7 +19,7 @@
         {
             <div class="user-card">
                 <img src="@user.ProfileImageUrl" alt="" class="rounded-avatar1" />
-                <div class="user-details">
+                <div class="user-details d-flex flex-column align-items-center justify-content-between">
                     <p class="username">@user.UserName</p>
                     @if (subscribedUsersId.Contains(user.Id)){
                         <form asp-action="UnSubscribeUser">
@@ -52,17 +52,19 @@
 }
 
 
-<h5>Subscribed Videos</h5>
+<div class="d-flex align-items-center mb-3 mt-3 justify-content-between">
+    <h5>Subscribed Videos</h5>
 
-<p>
-   
-        <a asp-action="Create">
+    <a asp-action="Create" class="mx-5">
         <button class="btn btn-primary text-white">Upload a new video</button>
     </a>
+</div>
+   
+
 
 
     
-</p>
+
 
 @if (Model.Any())
 {
@@ -88,6 +90,7 @@
             <div>
                 <button class="btn btn-primary" type="submit">Search</button>
                 <a class="btn btn_primary text-decoration-none border-1 border-secondary" href="VideosModels">Remove filter</a>
+              
             </div>
         </div>
     </form>
@@ -143,41 +146,15 @@
 
                     <form asp-action="SavePost">
                         <input type="text" value="@item.Id" name="video_id" hidden/>
-                        <input type="submit" value="Save Post" class="save_button" />
+
+                    <input type="submit" value="Save Post" class="save_button" />
                     </form>
 
                 </div>
             </div>
 
         }
-        @if (ads != null && ads.Count > 0)
-        {
-            foreach (var ad in ads)
-            {
-            <div class="card">
-                <a class="img-card" href="@ad.productLink">
-                    <img src="@ad.AdPosterUrl" />
-                </a>
-                <div class="card-content">
-                    <h4 class="card-title">
-                        <a href="@ad.productLink">
-                            @ad.AdvertisementTitle
-                        </a>
-                    </h4>
-                    <p class="">
-                        @ad.AdvertisementDescription
-                    </p>
-                </div>
-                <hr />
-                <div class="card-read-more d-flex justify-content-between">
-                    <h5><strong>AD</strong></h5>
-                    <a href="@ad.productLink" class="btn btn-link btn-block">
-                        More Details
-                    </a>
-                </div>
-            </div>
-            }
-        }
+      
 
     </div>
 
@@ -186,7 +163,48 @@ else
 {
     <div>You havent subscribed for any channels,Do subscribe and enjoy their content!</div>
 }
+@if (ads != null && ads.Count > 0)
+{
+    <hr />
+    <footer class="d-flex flex-wrap">
+        @if (ads != null && ads.Count > 0)
+        {
+            foreach (var ad in ads)
+            {
+                <div class="card">
+                    <a class="img-card" href="@ad.productLink">
+                        <img src="@ad.AdPosterUrl" />
+                    </a>
+                    <div class="card-content">
+                        <h4 class="card-title">
+                            <a href="@ad.productLink">
+                                @ad.AdvertisementTitle
+                            </a>
+                        </h4>
+                        <p class="">
+                            @ad.AdvertisementDescription
+                        </p>
+                    </div>
+                    <hr />
+                    <div class="card-read-more d-flex justify-content-between">
+                        <h5><strong>AD</strong></h5>
+                        <a href="@ad.productLink" class="btn btn-link btn-block">
+                            More Details
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+
+    </footer>
+}
+
+
+
+
 <style>
+
+
    .search_container{
        border-radius: 10px;
        padding: 5px;
@@ -204,8 +222,9 @@ else
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         margin-right: 10px;
-        width: 200px;
+        width: 100%;
         background-color: #f2f2f2;
         border-radius: 10px;
         padding: 10px;
