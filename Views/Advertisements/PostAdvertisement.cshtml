@@ -65,21 +65,21 @@
 <form asp-action="PostAdvertisement" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="adTitle">Advertisement Title:</label>
-        <input type="text" class="form-control" id="adTitle" name="AdvertisementTitle">
+        <input type="text" class="form-control" id="adTitle" name="AdvertisementTitle" required>
     </div>
     
     <div class="form-group">
         <label for="adDescription">Advertisement Description:</label>
-        <textarea class="form-control" id="adDescription" name="AdvertisementDescription"></textarea>
+        <textarea class="form-control" id="adDescription" name="AdvertisementDescription" required></textarea>
     </div>
   
     <div class="form-group">
         <label for="productLink">Product Link:</label>
-        <input type="text" class="form-control" id="productLink" name="productLink">
+        <input type="text" class="form-control" id="productLink" name="productLink" required>
     </div>
     <div class="form-group">
         <label class="control-label">Choose an Advertisement Poster</label>
-        <input type="file" name="adPoster" class="form-control" />
+        <input type="file" name="adPoster" class="form-control" required />
     </div>
     <p>**you have to make a payment to publish your advertisements**</p>
   <div id="payment_section">

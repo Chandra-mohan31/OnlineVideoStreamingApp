@@ -13,6 +13,7 @@ using OnlineVideoStreamingApp.Data;
 using OnlineVideoStreamingApp.Models;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
+using NuGet.Packaging.Signing;
 
 namespace OnlineVideoStreamingApp.Controllers
 {
@@ -273,6 +274,16 @@ namespace OnlineVideoStreamingApp.Controllers
                 Console.WriteLine("The files were not uploaded!");
             }else
             {
+               var videoFileExtensionInput = videofile.FileName.Substring(videofile.FileName.LastIndexOf("."));
+                var imageFileExtensionInput = thumbnailimage.FileName.Substring(thumbnailimage.FileName.LastIndexOf("."));
+
+                Console.WriteLine(videoFileExtensionInput);
+                Console.WriteLine(imageFileExtensionInput);
+                if(videoFileExtensionInput != ".mp4" || imageFileExtensionInput != ".jpg")
+                {
+                    ViewData["err"] = "File format unsupported , please choose .mp4 files for videos and .jpg for images";
+                    return View("Error");
+                }
 
                 //upload the image and video to s3 bucket and get back the url to upload the url to the database 
 
@@ -388,6 +399,21 @@ namespace OnlineVideoStreamingApp.Controllers
             if (_context.videos == null)
             {
                 return Problem("Entity set 'OnlineVideoStreamingAppContext.videos'  is null.");
+            }
+            var viewsModels = _context.VideoViewsTable.Where(v => v.Video.Id == id).Select(vs => vs.Id).ToList();
+            if(viewsModels != null)
+            {
+                foreach (var viewId in viewsModels)
+                {
+                    var viewModelToDEL = await _context.VideoViewsTable.FindAsync(viewId);
+                    if (viewModelToDEL != null)
+                    {
+                        _context.VideoViewsTable.Remove(viewModelToDEL);
+                    }
+
+
+
+                }
             }
             var videosModel = await _context.videos.FindAsync(id);
             if (videosModel != null)

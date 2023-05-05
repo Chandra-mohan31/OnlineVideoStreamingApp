@@ -108,7 +108,7 @@
                     <p class="card-text">@item.VideoDescription</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center align-items-center">
                         <img src="@item.PostedByUser.ProfileImageUrl" alt="Profile Image" class="rounded-avatar" />
 
                         <li class="list-group-item border-0"><strong>Posted By:</strong> @item.PostedByUser.UserName</li>
@@ -153,7 +153,6 @@ else
 }
 <style>
     .search_container {
-        border: 0.5px solid black;
         border-radius: 10px;
         padding: 5px;
     }
